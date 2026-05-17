@@ -327,11 +327,12 @@
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      /* Nav: hide all social icons + gig inquiry, shrink CTA button */
+      /* Nav: hide everything on mobile — hero has all the info */
       #nav { padding: 1rem 1.25rem; }
       .nav-links .nav-icon { display: none !important; }
       .nav-gig-btn { display: none !important; }
-      #nav .btn-gold { padding: 0.55rem 1.1rem !important; font-size: 0.8125rem !important; }
+      #nav .btn-gold { display: none !important; }
+      #nav .nav-logo { display: none !important; }
 
       /* Hero: flex column so we can reorder children */
       #hero { padding: 0 1.25rem 4rem; }
