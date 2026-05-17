@@ -327,19 +327,51 @@
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      /* Nav: hide all social icons, shrink CTA button */
+      /* Nav: hide all social icons + gig inquiry, shrink CTA button */
       #nav { padding: 1rem 1.25rem; }
       .nav-links .nav-icon { display: none !important; }
+      .nav-gig-btn { display: none !important; }
       #nav .btn-gold { padding: 0.55rem 1.1rem !important; font-size: 0.8125rem !important; }
 
-      /* Hero */
+      /* Hero: flex column so we can reorder children */
       #hero { padding: 0 1.25rem 4rem; }
-      .hero-name { font-size: clamp(2.75rem, 14vw, 4.5rem); }
-      .hero-sub { font-size: 0.9375rem; }
-      .hero-ctas { flex-direction: column; gap: 0.75rem; }
+      .hero-content { display: flex; flex-direction: column; }
+      .hero-eyebrow { order: 1; }
+      .hero-name { order: 2; font-size: clamp(2.75rem, 14vw, 4.5rem); margin-bottom: 0; }
+
+      /* Socials moved directly under the name — front and center */
+      .hero-social-block {
+        order: 3;
+        margin-top: 1.75rem !important;
+        padding-top: 1.5rem !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+        margin-bottom: 0;
+      }
+      .hero-handles {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+      }
+      .hero-handles a {
+        font-size: 1rem !important;
+        background: rgba(255,255,255,0.05) !important;
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        border-radius: 10px !important;
+        padding: 0.625rem 0.875rem !important;
+        width: 100% !important;
+      }
+
+      /* CTA buttons after socials */
+      .hero-ctas {
+        order: 4;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
       .hero-ctas a { display: flex !important; width: 100% !important; justify-content: center !important; }
-      .hero-handles { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.625rem !important; }
-      .hero-handles a { font-size: 0.875rem !important; }
+
+      /* Bio hidden on mobile — socials matter more */
+      .hero-bio { order: 5; display: none !important; }
 
       /* Reduce all section padding (overrides inline 6rem) */
       .section-wrap { padding: 0 1.25rem; }
@@ -373,7 +405,6 @@
     /* Very small phones (iPhone SE, 375px and under) */
     @media (max-width: 480px) {
       .hero-name { font-size: clamp(2.4rem, 13vw, 3.5rem); }
-      .hero-handles { grid-template-columns: 1fr !important; }
       .stat-num { font-size: 2.5rem; }
       .shorts-grid { grid-template-columns: 1fr !important; }
     }
@@ -397,6 +428,7 @@
     <a href="https://www.facebook.com/evan.macgregor.39" target="_blank" rel="noopener" class="nav-icon" aria-label="Facebook">
       <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
     </a>
+    <a href="#contact" class="btn-ghost nav-gig-btn" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Gig Inquiry</a>
     <a href="#contact" class="btn-gold" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Book a Lesson</a>
   </div>
 </nav>
@@ -409,7 +441,7 @@
     <h1 class="hero-name">
       Evan<br><span class="italic">MacGregor</span>
     </h1>
-    <p class="hero-sub">
+    <p class="hero-sub hero-bio">
       Professional guitarist, viral content creator, ITSF foosball champion, and UT Longhorns track athlete. Let's make something great together.
     </p>
     <div class="hero-ctas">
@@ -417,14 +449,14 @@
         Book a Lesson
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#videos" class="btn-ghost">
-        Watch Me Play
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <a href="#contact" class="btn-ghost">
+        Gig Inquiry
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </a>
     </div>
 
     <!-- Social handles — prominent on landing -->
-    <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
+    <div class="hero-social-block" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
       <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#70708a;margin-bottom:1.125rem;">Follow · Pay · Connect</p>
       <div class="hero-handles" style="display:flex;flex-wrap:wrap;gap:0.875rem 1.75rem;align-items:center;">
 
