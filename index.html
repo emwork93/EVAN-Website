@@ -84,6 +84,16 @@
     }
     .nav-icon:hover { color: #e8b04a; transform: scale(1.2); }
     .nav-icon:active { transform: scale(1.05); }
+    .nav-email {
+      display: flex; align-items: center; gap: 0.4rem;
+      color: #f0f0f0;
+      font-size: 0.8125rem; font-weight: 500;
+      text-decoration: none; white-space: nowrap;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-email:hover { color: #e8b04a; transform: translateY(-1px); }
+    .nav-email:active { transform: translateY(0); }
+    .nav-email:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 3px; border-radius: 2px; }
 
     /* ── HERO ── */
     #hero {
@@ -139,11 +149,11 @@
     /* ── HERO DROPDOWNS ── */
     .hero-dropdown { position: relative; }
     .hero-dropdown-btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      border: none; border-radius: 4px;
-      padding: 0.875rem 1.75rem;
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      border: none; border-radius: 5px;
+      padding: 1.25rem 2.5rem;
       color: #fff; font-family: 'Inter', sans-serif;
-      font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.025em;
+      font-size: 1.1875rem; font-weight: 700; letter-spacing: 0.02em;
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
     }
@@ -394,6 +404,8 @@
       .nav-gig-btn { display: none !important; }
       #nav .btn-gold { display: none !important; }
       #nav .nav-logo { display: none !important; }
+      .nav-links { margin-left: auto; gap: 0; }
+      .nav-email { font-size: 0.75rem; }
 
       /* Hero: flex column so we can reorder children */
       #hero { padding: 0 1.25rem 4rem; }
@@ -495,6 +507,10 @@
     </a>
     <a href="#contact" class="btn-gold nav-gig-btn" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Gig Inquiry</a>
     <a href="#contact" class="btn-gold" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Book a Lesson</a>
+    <a href="mailto:evan@evanmacgregor.com" class="nav-email">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      evan@evanmacgregor.com
+    </a>
   </div>
 </nav>
 
@@ -506,18 +522,15 @@
     <h1 class="hero-name">
       Evan<br><span class="italic">MacGregor</span>
     </h1>
-    <p class="hero-sub hero-bio">
-      Professional guitarist, content creator, ITSF foosball champion, and UT Longhorns track athlete. Let's make something great together.
-    </p>
     <!-- Social + Tips — front and center -->
-    <div class="hero-social-block" style="margin-bottom:2rem;">
-      <div class="hero-handles" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+    <div class="hero-social-block" style="margin-top:1.75rem;margin-bottom:2.25rem;">
+      <div class="hero-handles" style="display:flex;flex-wrap:wrap;gap:1.125rem;align-items:center;">
 
         <!-- Social Media dropdown -->
         <div class="hero-dropdown social">
           <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
             Social Media!
-            <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="chevron" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="hero-dropdown-menu">
             <a href="https://www.instagram.com/evan.macgregorr" target="_blank" rel="noopener">
@@ -551,7 +564,7 @@
         <div class="hero-dropdown tips">
           <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
             TIPS!!!
-            <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="chevron" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="hero-dropdown-menu">
             <a href="https://buy.stripe.com/6oU8wRe6KboHfiI1NG9AA04" target="_blank" rel="noopener">
@@ -571,6 +584,10 @@
 
       </div>
     </div>
+
+    <p class="hero-sub hero-bio">
+      Professional guitarist, content creator, ITSF foosball champion, and UT Longhorns track athlete. Let's make something great together.
+    </p>
 
     <div class="hero-ctas">
       <a href="#contact" class="btn-gold">
