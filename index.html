@@ -94,6 +94,7 @@
     .nav-email:hover { color: #e8b04a; transform: translateY(-1px); }
     .nav-email:active { transform: translateY(0); }
     .nav-email:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 3px; border-radius: 2px; }
+    .nav-gigs-link.active { color: #e8b04a; }
 
     /* ── HERO ── */
     #hero {
@@ -145,6 +146,38 @@
       margin-bottom: 2.25rem;
     }
     .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── NEXT SHOW BANNER ── */
+    .next-show-banner {
+      display: inline-flex; align-items: center; gap: 0.875rem;
+      padding: 0.75rem 1.25rem;
+      background: rgba(200,144,42,0.06);
+      border: 1px solid rgba(200,144,42,0.25);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .next-show-banner:hover { border-color: rgba(200,144,42,0.45); background: rgba(200,144,42,0.1); transform: translateY(-2px); }
+    .next-show-banner:active { transform: translateY(0); }
+    .next-show-banner:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 3px; }
+    .next-show-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #e8b04a; flex-shrink: 0;
+      animation: next-show-pulse 2s infinite;
+    }
+    @keyframes next-show-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(232,176,74,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(232,176,74,0); }
+      100% { box-shadow: 0 0 0 0 rgba(232,176,74,0); }
+    }
+    .next-show-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #c8902a; white-space: nowrap;
+    }
+    .next-show-text { font-size: 0.875rem; color: #f0f0f0; font-weight: 500; white-space: nowrap; }
+    .next-show-text .muted { color: #70708a; font-weight: 400; }
+    .next-show-arrow { color: #70708a; transition: transform 0.2s, color 0.2s; flex-shrink: 0; }
+    .next-show-banner:hover .next-show-arrow { color: #e8b04a; transform: translateX(3px); }
 
     /* ── HERO DROPDOWNS ── */
     .hero-dropdown { position: relative; }
@@ -404,8 +437,9 @@
       .nav-gig-btn { display: none !important; }
       #nav .btn-gold { display: none !important; }
       #nav .nav-logo { display: none !important; }
-      .nav-links { margin-left: auto; gap: 0; }
+      .nav-links { margin-left: auto; gap: 1rem; }
       .nav-email { font-size: 0.75rem; }
+      .nav-gigs-link { font-size: 0.75rem; }
 
       /* Hero: flex column so we can reorder children */
       #hero { padding: 0 1.25rem 4rem; }
@@ -435,6 +469,16 @@
         justify-content: space-between !important;
       }
       .hero-dropdown-menu { left: 0 !important; right: 0 !important; min-width: 0 !important; }
+
+      /* Next show banner, right after socials */
+      #next-show-banner {
+        order: 3;
+        margin-top: 1.25rem !important;
+        margin-bottom: 0 !important;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
       /* CTA buttons after socials */
       .hero-ctas {
@@ -505,6 +549,7 @@
     <a href="https://www.facebook.com/evan.macgregor.39" target="_blank" rel="noopener" class="nav-icon" aria-label="Facebook">
       <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
     </a>
+    <a href="gigs.html" class="nav-gigs-link nav-email">Gigs</a>
     <a href="#contact" class="btn-gold nav-gig-btn" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Gig Inquiry</a>
     <a href="#contact" class="btn-gold" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Book a Lesson</a>
     <a href="mailto:evan@evanmacgregor.com" class="nav-email">
@@ -584,6 +629,13 @@
 
       </div>
     </div>
+
+    <a href="gigs.html" id="next-show-banner" class="next-show-banner" style="display:none;margin-bottom:2.25rem;">
+      <span class="next-show-dot"></span>
+      <span class="next-show-label">Next Show</span>
+      <span class="next-show-text" id="next-show-text"></span>
+      <svg class="next-show-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
 
     <p class="hero-sub hero-bio">
       Professional guitarist, content creator, ITSF foosball champion, and UT Longhorns track athlete. Let's make something great together.
@@ -1048,6 +1100,30 @@
       document.querySelectorAll('.hero-dropdown.open').forEach(d => d.classList.remove('open'));
     }
   });
+
+  // Next Show banner — pull soonest upcoming gig from gigs.json
+  fetch('gigs.json')
+    .then(r => r.json())
+    .then(gigs => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const parseGigDate = d => {
+        const [y, m, day] = d.split('-').map(Number);
+        return new Date(y, m - 1, day);
+      };
+      const upcoming = gigs
+        .filter(g => parseGigDate(g.date) >= today)
+        .sort((a, b) => a.date.localeCompare(b.date));
+      if (upcoming.length === 0) return;
+
+      const next = upcoming[0];
+      const dateStr = parseGigDate(next.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const banner = document.getElementById('next-show-banner');
+      document.getElementById('next-show-text').innerHTML =
+        `${dateStr} <span class="muted">·</span> ${next.venue} <span class="muted">·</span> ${next.city}`;
+      banner.style.display = 'inline-flex';
+    })
+    .catch(() => {});
 
   // Contact form — open mail client
   document.getElementById('contact-form').addEventListener('submit', function(e) {

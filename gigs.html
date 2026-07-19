@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gigs — Evan MacGregor</title>
+  <meta name="description" content="Upcoming live shows and past performances from Evan MacGregor — guitarist and performer.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { light: '#e8b04a', DEFAULT: '#c8902a', dark: '#9a6e1e' },
+            surface: { base: '#060608', raised: '#0e0e14', card: '#13131b', border: '#1d1d28' }
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['Inter', 'sans-serif'],
+            stat: ['"Bebas Neue"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #060608;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Subtle film grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(6, 6, 8, 0.88);
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border-bottom-color: rgba(200, 144, 42, 0.12);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f0f0f0;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .nav-logo span { color: #c8902a; font-style: italic; }
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-icon {
+      color: #70708a;
+      transition: color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; align-items: center;
+    }
+    .nav-icon:hover { color: #e8b04a; transform: scale(1.2); }
+    .nav-icon:active { transform: scale(1.05); }
+    .nav-email {
+      display: flex; align-items: center; gap: 0.4rem;
+      color: #f0f0f0;
+      font-size: 0.8125rem; font-weight: 500;
+      text-decoration: none; white-space: nowrap;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-email:hover { color: #e8b04a; transform: translateY(-1px); }
+    .nav-email:active { transform: translateY(0); }
+    .nav-email:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 3px; border-radius: 2px; }
+    .nav-gigs-link.active { color: #e8b04a; }
+
+    /* ── BUTTONS ── */
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      background: linear-gradient(135deg, #d4982e 0%, #a07020 100%);
+      color: #fff;
+      font-weight: 600; font-size: 0.9375rem;
+      letter-spacing: 0.025em;
+      border-radius: 4px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(200,144,42,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+    }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(200,144,42,0.55), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .btn-gold:active { transform: translateY(-1px); }
+
+    /* ── SECTION COMMON ── */
+    .section-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #c8902a; margin-bottom: 0.625rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+    }
+    .gold-rule {
+      width: 56px; height: 2px;
+      background: linear-gradient(90deg, #c8902a, transparent);
+      margin-top: 1rem;
+    }
+
+    /* ── FADE-UP ANIMATION ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── GIG ROWS ── */
+    .gigs-subhead {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.375rem; font-weight: 700;
+      color: #f0f0f0;
+      margin-bottom: 1.25rem;
+    }
+    .gig-row {
+      display: flex; align-items: center; gap: 1.75rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #1d1d28;
+      transition: padding-left 0.25s cubic-bezier(0.34,1.56,0.64,1), border-color 0.25s;
+    }
+    .gig-row:hover { padding-left: 0.5rem; border-color: rgba(200,144,42,0.3); }
+    .gig-row:last-child { border-bottom: none; }
+    .gig-row.past { opacity: 0.55; }
+    .gig-row.past:hover { opacity: 0.85; }
+    .gig-date {
+      flex-shrink: 0; width: 76px; text-align: center;
+    }
+    .gig-date .month { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: #c8902a; font-weight: 600; }
+    .gig-date .day {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.25rem; line-height: 1.05; color: #f0f0f0;
+    }
+    .gig-date .year { font-size: 0.7rem; color: #70708a; }
+    .gig-info { flex: 1; min-width: 0; }
+    .gig-venue {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: #f0f0f0; text-decoration: none;
+      transition: color 0.2s;
+    }
+    a.gig-venue:hover { color: #e8b04a; }
+    .gig-meta { font-size: 0.85rem; color: #70708a; margin-top: 0.3rem; }
+    .gig-time { color: #70708a; }
+    .gig-address { font-size: 0.8rem; margin-top: 0.3rem; }
+    .gig-address a { color: #70708a; text-decoration: none; transition: color 0.2s; }
+    .gig-address a:hover { color: #e8b04a; }
+    .gig-notes { font-size: 0.85rem; color: rgba(240,240,240,0.5); margin-top: 0.4rem; font-style: italic; }
+    .gig-actions { flex-shrink: 0; }
+    .gig-ticket-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      border: 1px solid rgba(200,144,42,0.35);
+      color: #e8b04a;
+      font-weight: 600; font-size: 0.8125rem;
+      border-radius: 4px;
+      text-decoration: none; white-space: nowrap;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .gig-ticket-btn:hover { border-color: rgba(200,144,42,0.6); background: rgba(200,144,42,0.08); transform: translateY(-2px); }
+    .gig-ticket-btn:active { transform: translateY(0); }
+
+    .gigs-empty {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: #0e0e14;
+      border: 1px solid #1d1d28;
+      border-radius: 8px;
+    }
+    .gigs-empty p {
+      color: #70708a; font-size: 0.9375rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── PAST SHOWS ACCORDION ── */
+    .past-gigs-summary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      cursor: pointer;
+      list-style: none;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #70708a;
+      padding: 0.5rem 0;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    .past-gigs-summary::-webkit-details-marker { display: none; }
+    .past-gigs-summary:hover { color: #e8b04a; }
+    .past-gigs-summary .chevron { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    details[open] .past-gigs-summary .chevron { transform: rotate(180deg); }
+    #past-gigs { margin-top: 1rem; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      #nav { padding: 1rem 1.25rem; }
+      .nav-links .nav-icon { display: none !important; }
+      #nav .btn-gold { display: none !important; }
+      #nav .nav-logo { display: none !important; }
+      .nav-links { margin-left: auto; gap: 1rem; }
+      .nav-email { font-size: 0.75rem; }
+      .nav-gigs-link { font-size: 0.75rem; }
+
+      .section-wrap { padding: 0 1.25rem; }
+      section { padding-left: 0 !important; padding-right: 0 !important; }
+
+      .gig-row { gap: 1.125rem; padding: 1.25rem 0; }
+      .gig-row:hover { padding-left: 0; }
+      .gig-date { width: 56px; }
+      .gig-date .day { font-size: 1.75rem; }
+      .gig-venue { font-size: 1.0625rem; }
+      .gig-row { flex-wrap: wrap; }
+      .gig-actions { width: 100%; margin-left: calc(56px + 1.125rem); margin-top: 0.5rem; }
+
+      footer .section-wrap { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 1rem !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════ NAV -->
+<nav id="nav">
+  <a href="index.html#hero" class="nav-logo">Evan <span>MacGregor</span></a>
+  <div class="nav-links">
+    <a href="https://www.instagram.com/evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="Instagram">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="TikTok">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.84 4.84 0 0 1-1.01-.06z"/></svg>
+    </a>
+    <a href="https://www.youtube.com/@evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="YouTube">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/evan.macgregor.39" target="_blank" rel="noopener" class="nav-icon" aria-label="Facebook">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+    <a href="gigs.html" class="nav-gigs-link nav-email active">Gigs</a>
+    <a href="index.html#contact" class="btn-gold nav-gig-btn" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Gig Inquiry</a>
+    <a href="index.html#contact" class="btn-gold" style="padding:0.6rem 1.25rem;font-size:0.875rem;">Book a Lesson</a>
+    <a href="mailto:evan@evanmacgregor.com" class="nav-email">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      evan@evanmacgregor.com
+    </a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════ PAGE HEADER -->
+<section style="padding:9.5rem 0 3rem;">
+  <div class="section-wrap">
+    <div class="fade-up visible">
+      <p class="section-label">Live Shows</p>
+      <h1 class="section-title">Gigs</h1>
+      <div class="gold-rule"></div>
+      <p style="color:#70708a;font-size:0.9375rem;line-height:1.75;margin-top:1.25rem;max-width:520px;">
+        Catch a live show — dates, venues, and ticket links updated as they're booked.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ UPCOMING -->
+<section style="padding:0 0 4rem;">
+  <div class="section-wrap">
+    <h2 class="gigs-subhead fade-up visible">Upcoming</h2>
+    <div id="upcoming-gigs"></div>
+    <div id="gigs-empty" class="gigs-empty" style="display:none;">
+      <p>No upcoming shows right now — new dates are added regularly.</p>
+      <a href="index.html#contact" class="btn-gold">Book a Show</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ PAST -->
+<section style="padding:0 0 6rem;">
+  <div class="section-wrap">
+    <details id="past-gigs-details" style="display:none;">
+      <summary class="past-gigs-summary">
+        Past Shows
+        <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div id="past-gigs"></div>
+    </details>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ FOOTER -->
+<footer style="background:#060608;border-top:1px solid #1d1d28;padding:2.5rem 0;">
+  <div class="section-wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;">
+    <div>
+      <p class="nav-logo" style="font-size:1.1rem;display:block;margin-bottom:0.25rem;">Evan <span style="color:#c8902a;font-style:italic;">MacGregor</span></p>
+      <p style="font-size:0.75rem;color:#70708a;">Guitarist · Creator · Athlete</p>
+    </div>
+    <div style="display:flex;gap:1.125rem;align-items:center;">
+      <a href="https://www.instagram.com/evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="Instagram" style="color:#70708a;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="https://www.tiktok.com/@evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="TikTok" style="color:#70708a;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.84 4.84 0 0 1-1.01-.06z"/></svg></a>
+      <a href="https://www.youtube.com/@evan.macgregorr" target="_blank" rel="noopener" class="nav-icon" aria-label="YouTube" style="color:#70708a;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+      <a href="https://www.facebook.com/evan.macgregor.39" target="_blank" rel="noopener" class="nav-icon" aria-label="Facebook" style="color:#70708a;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    </div>
+    <p style="font-size:0.75rem;color:#70708a;">© 2026 Evan MacGregor &nbsp;·&nbsp; <a href="mailto:evan@evanmacgregor.com" style="color:#70708a;text-decoration:none;" onmouseover="this.style.color='#c8902a'" onmouseout="this.style.color='#70708a'">evan@evanmacgregor.com</a></p>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════ SCRIPTS -->
+<script>
+  // Nav scroll glass effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Scroll-triggered fade-up
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  function parseGigDate(d) {
+    const [y, m, day] = d.split('-').map(Number);
+    return new Date(y, m - 1, day);
+  }
+
+  function formatGigDate(d) {
+    const date = parseGigDate(d);
+    return {
+      month: date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
+      day: date.getDate(),
+      year: date.getFullYear()
+    };
+  }
+
+  function buildGigRow(gig, isPast) {
+    const { month, day, year } = formatGigDate(gig.date);
+    const venueHtml = gig.venueLink
+      ? `<a href="${gig.venueLink}" target="_blank" rel="noopener" class="gig-venue">${gig.venue}</a>`
+      : `<span class="gig-venue">${gig.venue}</span>`;
+    const ticketHtml = (!isPast && gig.ticketLink)
+      ? `<a href="${gig.ticketLink}" target="_blank" rel="noopener" class="gig-ticket-btn">Tickets
+           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+         </a>`
+      : '';
+    const addressHtml = gig.address
+      ? `<p class="gig-address"><a href="https://maps.google.com/?q=${encodeURIComponent(gig.address)}" target="_blank" rel="noopener">${gig.address}</a></p>`
+      : '';
+    const notesHtml = gig.notes ? `<p class="gig-notes">${gig.notes}</p>` : '';
+
+    const row = document.createElement('div');
+    row.className = 'gig-row fade-up' + (isPast ? ' past' : '');
+    row.innerHTML = `
+      <div class="gig-date">
+        <div class="month">${month}</div>
+        <div class="day">${day}</div>
+        <div class="year">${year}</div>
+      </div>
+      <div class="gig-info">
+        ${venueHtml}
+        <p class="gig-meta"><span class="gig-time">${gig.time || ''}</span>${gig.time ? ' · ' : ''}${gig.city}</p>
+        ${addressHtml}
+        ${notesHtml}
+      </div>
+      <div class="gig-actions">${ticketHtml}</div>
+    `;
+    return row;
+  }
+
+  fetch('gigs.json')
+    .then(r => r.json())
+    .then(gigs => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const upcoming = gigs
+        .filter(g => parseGigDate(g.date) >= today)
+        .sort((a, b) => a.date.localeCompare(b.date));
+      const past = gigs
+        .filter(g => parseGigDate(g.date) < today)
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+      const upcomingEl = document.getElementById('upcoming-gigs');
+      const emptyEl = document.getElementById('gigs-empty');
+      if (upcoming.length === 0) {
+        emptyEl.style.display = 'block';
+      } else {
+        upcoming.forEach(g => upcomingEl.appendChild(buildGigRow(g, false)));
+      }
+
+      if (past.length > 0) {
+        const detailsEl = document.getElementById('past-gigs-details');
+        const pastEl = document.getElementById('past-gigs');
+        detailsEl.style.display = 'block';
+        past.forEach(g => pastEl.appendChild(buildGigRow(g, true)));
+      }
+
+      document.querySelectorAll('.gig-row').forEach(el => io.observe(el));
+    })
+    .catch(() => {
+      document.getElementById('gigs-empty').style.display = 'block';
+    });
+</script>
+
+</body>
+</html>
