@@ -139,17 +139,32 @@
     /* ── HERO DROPDOWNS ── */
     .hero-dropdown { position: relative; }
     .hero-dropdown-btn {
-      display: inline-flex; align-items: center; gap: 0.55rem;
-      background: none; border: none; padding: 0;
-      color: #f0f0f0; font-family: 'Inter', sans-serif;
-      font-size: 1.0625rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      border: none; border-radius: 4px;
+      padding: 0.875rem 1.75rem;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.025em;
       cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
     }
-    .hero-dropdown-btn:hover, .hero-dropdown.open .hero-dropdown-btn { color: #e8b04a; transform: translateY(-2px); }
-    .hero-dropdown-btn:active { transform: translateY(0); }
+    .hero-dropdown-btn:hover { transform: translateY(-3px); }
+    .hero-dropdown-btn:active { transform: translateY(-1px); }
+    .hero-dropdown-btn:focus-visible { outline: 2px solid rgba(255,255,255,0.7); outline-offset: 3px; }
     .hero-dropdown-btn .chevron { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
     .hero-dropdown.open .hero-dropdown-btn .chevron { transform: rotate(180deg); }
+
+    .hero-dropdown.social .hero-dropdown-btn {
+      background: linear-gradient(120deg, #8b5cf6 0%, #ec4899 35%, #f59e0b 68%, #10b981 100%);
+      box-shadow: 0 4px 24px rgba(236,72,153,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .hero-dropdown.social .hero-dropdown-btn:hover { box-shadow: 0 10px 36px rgba(236,72,153,0.5), inset 0 1px 0 rgba(255,255,255,0.25); }
+
+    .hero-dropdown.tips .hero-dropdown-btn {
+      background: linear-gradient(135deg, #4f7942 0%, #2d5f3f 55%, #16301f 100%);
+      box-shadow: 0 4px 24px rgba(22,48,31,0.55), inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+    .hero-dropdown.tips .hero-dropdown-btn:hover { box-shadow: 0 10px 36px rgba(22,48,31,0.7), inset 0 1px 0 rgba(255,255,255,0.2); }
+
     .hero-dropdown-menu {
       position: absolute; top: calc(100% + 0.875rem); left: 0;
       min-width: 210px;
@@ -177,6 +192,9 @@
       transition: background 0.15s, color 0.15s;
     }
     .hero-dropdown-menu a:hover { background: rgba(200,144,42,0.1); color: #e8b04a; }
+    .hero-dropdown-menu a:focus-visible { outline: 2px solid rgba(255,255,255,0.4); outline-offset: 2px; }
+    .hero-dropdown.social .hero-dropdown-menu a:hover { background: rgba(236,72,153,0.12); color: #f472b6; }
+    .hero-dropdown.tips .hero-dropdown-menu a:hover { background: rgba(79,121,66,0.15); color: #85bb65; }
     .hero-dd-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
     /* ── BUTTONS ── */
@@ -399,10 +417,8 @@
       .hero-dropdown { width: 100% !important; }
       .hero-dropdown-btn {
         font-size: 1rem !important;
-        background: rgba(255,255,255,0.05) !important;
-        border: 1px solid rgba(255,255,255,0.08) !important;
         border-radius: 10px !important;
-        padding: 0.75rem 1rem !important;
+        padding: 0.875rem 1.125rem !important;
         width: 100% !important;
         justify-content: space-between !important;
       }
@@ -493,28 +509,12 @@
     <p class="hero-sub hero-bio">
       Professional guitarist, content creator, ITSF foosball champion, and UT Longhorns track athlete. Let's make something great together.
     </p>
-    <div class="hero-ctas">
-      <a href="#contact" class="btn-gold">
-        Book a Lesson
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#contact" class="btn-gold">
-        Gig Inquiry
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </a>
-      <a href="#videos" class="btn-ghost">
-        Watch Me Play
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </a>
-    </div>
-
-    <!-- Social handles — prominent on landing -->
-    <div class="hero-social-block" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
-      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#70708a;margin-bottom:1.125rem;">Follow · Pay · Connect</p>
-      <div class="hero-handles" style="display:flex;flex-wrap:wrap;gap:0.875rem 1.75rem;align-items:center;">
+    <!-- Social + Tips — front and center -->
+    <div class="hero-social-block" style="margin-bottom:2rem;">
+      <div class="hero-handles" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
 
         <!-- Social Media dropdown -->
-        <div class="hero-dropdown">
+        <div class="hero-dropdown social">
           <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
             Social Media!
             <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -548,7 +548,7 @@
         </div>
 
         <!-- Tips dropdown -->
-        <div class="hero-dropdown">
+        <div class="hero-dropdown tips">
           <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
             TIPS!!!
             <svg class="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -570,6 +570,21 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-gold">
+        Book a Lesson
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#contact" class="btn-gold">
+        Gig Inquiry
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </a>
+      <a href="#videos" class="btn-ghost">
+        Watch Me Play
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </a>
     </div>
   </div>
 </section>
