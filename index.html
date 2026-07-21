@@ -149,34 +149,34 @@
 
     /* ── NEXT SHOW BANNER ── */
     .next-show-banner {
-      display: inline-flex; align-items: center; gap: 0.875rem;
-      padding: 0.75rem 1.25rem;
-      background: rgba(200,144,42,0.06);
-      border: 1px solid rgba(200,144,42,0.25);
-      border-radius: 8px;
+      display: inline-flex; align-items: center; gap: 1.125rem;
+      padding: 1.15rem 1.85rem;
+      background: rgba(200,144,42,0.08);
+      border: 1px solid rgba(200,144,42,0.35);
+      border-radius: 10px;
       text-decoration: none;
       transition: border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .next-show-banner:hover { border-color: rgba(200,144,42,0.45); background: rgba(200,144,42,0.1); transform: translateY(-2px); }
+    .next-show-banner:hover { border-color: rgba(200,144,42,0.55); background: rgba(200,144,42,0.14); transform: translateY(-2px); }
     .next-show-banner:active { transform: translateY(0); }
     .next-show-banner:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 3px; }
     .next-show-dot {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 11px; height: 11px; border-radius: 50%;
       background: #e8b04a; flex-shrink: 0;
       animation: next-show-pulse 2s infinite;
     }
     @keyframes next-show-pulse {
       0% { box-shadow: 0 0 0 0 rgba(232,176,74,0.5); }
-      70% { box-shadow: 0 0 0 8px rgba(232,176,74,0); }
+      70% { box-shadow: 0 0 0 10px rgba(232,176,74,0); }
       100% { box-shadow: 0 0 0 0 rgba(232,176,74,0); }
     }
     .next-show-label {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      font-size: 0.875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
       color: #c8902a; white-space: nowrap;
     }
-    .next-show-text { font-size: 0.875rem; color: #f0f0f0; font-weight: 500; white-space: nowrap; }
+    .next-show-text { font-size: 1.125rem; color: #f0f0f0; font-weight: 600; white-space: nowrap; }
     .next-show-text .muted { color: #70708a; font-weight: 400; }
-    .next-show-arrow { color: #70708a; transition: transform 0.2s, color 0.2s; flex-shrink: 0; }
+    .next-show-arrow { color: #70708a; transition: transform 0.2s, color 0.2s; flex-shrink: 0; width: 19px; height: 19px; }
     .next-show-banner:hover .next-show-arrow { color: #e8b04a; transform: translateX(3px); }
 
     /* ── HERO DROPDOWNS ── */
@@ -211,6 +211,9 @@
     .hero-dropdown.signup .hero-dropdown-btn {
       background: linear-gradient(135deg, #d4982e 0%, #a07020 100%);
       box-shadow: 0 4px 24px rgba(200,144,42,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+      font-size: 0.9375rem;
+      padding: 1.25rem 2rem;
+      white-space: nowrap;
     }
     .hero-dropdown.signup .hero-dropdown-btn:hover { box-shadow: 0 10px 36px rgba(200,144,42,0.55), inset 0 1px 0 rgba(255,255,255,0.2); }
     .hero-dropdown.signup .hero-dropdown-menu { min-width: 300px; padding: 1.1rem; }
@@ -637,7 +640,7 @@
         <!-- Signup dropdown -->
         <div class="hero-dropdown signup">
           <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
-            Stay Updated
+            Stay up to date on Gigs/New Music!
             <svg class="chevron" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="hero-dropdown-menu">
@@ -674,7 +677,7 @@
       <span class="next-show-dot"></span>
       <span class="next-show-label">Next Show</span>
       <span class="next-show-text" id="next-show-text"></span>
-      <svg class="next-show-arrow" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <svg class="next-show-arrow" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
 
     <p class="hero-sub hero-bio">
