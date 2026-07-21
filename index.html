@@ -208,6 +208,13 @@
     }
     .hero-dropdown.tips .hero-dropdown-btn:hover { box-shadow: 0 10px 36px rgba(22,48,31,0.7), inset 0 1px 0 rgba(255,255,255,0.2); }
 
+    .hero-dropdown.signup .hero-dropdown-btn {
+      background: linear-gradient(135deg, #d4982e 0%, #a07020 100%);
+      box-shadow: 0 4px 24px rgba(200,144,42,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .hero-dropdown.signup .hero-dropdown-btn:hover { box-shadow: 0 10px 36px rgba(200,144,42,0.55), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .hero-dropdown.signup .hero-dropdown-menu { min-width: 300px; padding: 1.1rem; }
+
     .hero-dropdown-menu {
       position: absolute; top: calc(100% + 0.875rem); left: 0;
       min-width: 210px;
@@ -624,6 +631,39 @@
               </span>
               Venmo
             </a>
+          </div>
+        </div>
+
+        <!-- Signup dropdown -->
+        <div class="hero-dropdown signup">
+          <button type="button" class="hero-dropdown-btn" onclick="toggleHeroDropdown(this)">
+            Stay Updated
+            <svg class="chevron" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="hero-dropdown-menu">
+            <p style="font-size:0.8125rem;color:#70708a;line-height:1.5;margin-bottom:0.9rem;">
+              Stay up to date on upcoming gigs and releases.
+            </p>
+            <form id="signup-form"
+                  action="https://e89f7978.sibforms.com/serve/MUIFAFTyTaKVDWYQ1n4Qg5tgD7QO_YO50xkrSBFKDZek35_oR_Gugq3QaQjdjSmvpn3cSs23dGZpxZQkpJe-6TALxTWzyoi-aQeu_5aJGr-VgyWBkuPLYfD44LQZh0NaWH3_4tVT4mvVGHadB3Tg-tnUUbl92WPyum2IiIiJn5RlrO-DMMvmqIaWdGkb16sUNqDLdI2ycfi-kyZ5Wg=="
+                  method="POST" target="signup-hidden-iframe"
+                  style="display:flex;flex-direction:column;gap:0.65rem;">
+              <input class="contact-input" style="padding:0.65rem 0.8rem;font-size:0.85rem;" type="text" name="FIRSTNAME" placeholder="Full name" required>
+              <input class="contact-input" style="padding:0.65rem 0.8rem;font-size:0.85rem;" type="email" name="EMAIL" placeholder="your@email.com" required>
+              <input class="contact-input" style="padding:0.65rem 0.8rem;font-size:0.85rem;" type="tel" id="signup-phone" name="SMS" placeholder="(555) 123-4567" required>
+
+              <input type="hidden" name="SMS__COUNTRY_CODE" value="+1">
+              <input type="hidden" name="locale" value="en">
+              <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+
+              <button type="submit" id="signup-submit" class="btn-gold" style="justify-content:center;padding:0.65rem 1rem;font-size:0.85rem;margin-top:0.15rem;">
+                Sign Up
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg>
+              </button>
+            </form>
+            <p id="signup-success" style="display:none;color:#e8b04a;font-size:0.8125rem;text-align:center;margin-top:0.9rem;">You're on the list!</p>
+            <p id="signup-error" style="display:none;color:#e8776a;font-size:0.8125rem;text-align:center;margin-top:0.9rem;">Please enter a valid phone number.</p>
+            <iframe name="signup-hidden-iframe" title="signup" style="display:none;"></iframe>
           </div>
         </div>
 
@@ -1136,6 +1176,42 @@
     const body    = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${message}`);
     window.location.href = `mailto:evan@evanmacgregor.com?subject=${subject}&body=${body}`;
   });
+
+  // Signup form — format phone, submit to Brevo via hidden iframe, show inline success
+  (function() {
+    const form      = document.getElementById('signup-form');
+    const phone     = document.getElementById('signup-phone');
+    const submitBtn = document.getElementById('signup-submit');
+    const successEl = document.getElementById('signup-success');
+    const errorEl   = document.getElementById('signup-error');
+    let submitting = false;
+
+    form.addEventListener('submit', function(e) {
+      const digits = phone.value.replace(/\D/g, '');
+      const normalized = digits.length === 10 ? '1' + digits : digits;
+      if (normalized.length < 11 || normalized.length > 15) {
+        e.preventDefault();
+        errorEl.style.display = 'block';
+        successEl.style.display = 'none';
+        return;
+      }
+      errorEl.style.display = 'none';
+      phone.value = normalized;
+      submitting = true;
+      submitBtn.style.opacity = '0.6';
+      submitBtn.style.pointerEvents = 'none';
+    });
+
+    const hiddenIframe = document.querySelector('iframe[title="signup"]');
+    hiddenIframe.addEventListener('load', function() {
+      if (!submitting) return;
+      submitting = false;
+      submitBtn.style.opacity = '';
+      submitBtn.style.pointerEvents = '';
+      successEl.style.display = 'block';
+      form.reset();
+    });
+  })();
 </script>
 
 </body>
