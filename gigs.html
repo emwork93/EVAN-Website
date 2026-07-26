@@ -180,7 +180,7 @@
     .gig-address a { color: #70708a; text-decoration: none; transition: color 0.2s; }
     .gig-address a:hover { color: #e8b04a; }
     .gig-notes { font-size: 0.85rem; color: rgba(240,240,240,0.5); margin-top: 0.4rem; font-style: italic; }
-    .gig-actions { flex-shrink: 0; }
+    .gig-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end; }
     .gig-ticket-btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.6rem 1.25rem;
@@ -193,6 +193,26 @@
     }
     .gig-ticket-btn:hover { border-color: rgba(200,144,42,0.6); background: rgba(200,144,42,0.08); transform: translateY(-2px); }
     .gig-ticket-btn:active { transform: translateY(0); }
+    .gig-ticket-btn:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 2px; }
+    .gig-video-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      background: linear-gradient(135deg, #d4982e 0%, #a07020 100%);
+      color: #fff;
+      font-weight: 600; font-size: 0.8125rem;
+      border-radius: 4px;
+      text-decoration: none; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(200,144,42,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+    }
+    .gig-video-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,144,42,0.5), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .gig-video-btn:active { transform: translateY(0); }
+    .gig-video-btn:focus-visible { outline: 2px solid rgba(232,176,74,0.6); outline-offset: 2px; }
+
+    .gigs-fallback-note {
+      font-size: 0.8rem; color: #70708a; margin: 1rem 0 2.5rem;
+      font-style: italic;
+    }
 
     .gigs-empty {
       padding: 3rem 2rem;
@@ -243,7 +263,7 @@
       .gig-date .day { font-size: 1.75rem; }
       .gig-venue { font-size: 1.0625rem; }
       .gig-row { flex-wrap: wrap; }
-      .gig-actions { width: 100%; margin-left: calc(56px + 1.125rem); margin-top: 0.5rem; }
+      .gig-actions { width: 100%; margin-left: calc(56px + 1.125rem); margin-top: 0.5rem; align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
 
       footer .section-wrap { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 1rem !important; }
     }
@@ -294,8 +314,11 @@
 <!-- ════════════════════════════════════════════════ UPCOMING -->
 <section style="padding:0 0 4rem;">
   <div class="section-wrap">
-    <h2 class="gigs-subhead fade-up visible">Upcoming</h2>
+    <h2 id="upcoming-subhead" class="gigs-subhead fade-up visible">Upcoming</h2>
     <div id="upcoming-gigs"></div>
+    <p id="gigs-fallback-note" class="gigs-fallback-note fade-up visible" style="display:none;">
+      No upcoming shows booked right now — here's the most recent one. Check back soon for new dates.
+    </p>
     <div id="gigs-empty" class="gigs-empty" style="display:none;">
       <p>No upcoming shows right now — new dates are added regularly.</p>
       <a href="index.html#contact" class="btn-gold">Book a Show</a>
@@ -365,7 +388,9 @@
     };
   }
 
-  function buildGigRow(gig, isPast) {
+  function buildGigRow(gig, isPast, opts) {
+    opts = opts || {};
+    const dimmed = isPast && !opts.featured;
     const { month, day, year } = formatGigDate(gig.date);
     const venueHtml = gig.venueLink
       ? `<a href="${gig.venueLink}" target="_blank" rel="noopener" class="gig-venue">${gig.venue}</a>`
@@ -375,13 +400,18 @@
            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
          </a>`
       : '';
+    const videoHtml = gig.videoLink
+      ? `<a href="${gig.videoLink}" target="_blank" rel="noopener" class="gig-video-btn">Watch
+           <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+         </a>`
+      : '';
     const addressHtml = gig.address
       ? `<p class="gig-address"><a href="https://maps.google.com/?q=${encodeURIComponent(gig.address)}" target="_blank" rel="noopener">${gig.address}</a></p>`
       : '';
     const notesHtml = gig.notes ? `<p class="gig-notes">${gig.notes}</p>` : '';
 
     const row = document.createElement('div');
-    row.className = 'gig-row fade-up' + (isPast ? ' past' : '');
+    row.className = 'gig-row fade-up' + (dimmed ? ' past' : '');
     row.innerHTML = `
       <div class="gig-date">
         <div class="month">${month}</div>
@@ -394,7 +424,7 @@
         ${addressHtml}
         ${notesHtml}
       </div>
-      <div class="gig-actions">${ticketHtml}</div>
+      <div class="gig-actions">${ticketHtml}${videoHtml}</div>
     `;
     return row;
   }
@@ -414,10 +444,18 @@
 
       const upcomingEl = document.getElementById('upcoming-gigs');
       const emptyEl = document.getElementById('gigs-empty');
-      if (upcoming.length === 0) {
-        emptyEl.style.display = 'block';
-      } else {
+      const fallbackNoteEl = document.getElementById('gigs-fallback-note');
+      const subheadEl = document.getElementById('upcoming-subhead');
+
+      if (upcoming.length > 0) {
         upcoming.forEach(g => upcomingEl.appendChild(buildGigRow(g, false)));
+      } else if (past.length > 0) {
+        // No upcoming shows — feature the most recent past gig front and center instead.
+        subheadEl.textContent = 'Most Recent Show';
+        upcomingEl.appendChild(buildGigRow(past[0], true, { featured: true }));
+        fallbackNoteEl.style.display = 'block';
+      } else {
+        emptyEl.style.display = 'block';
       }
 
       if (past.length > 0) {

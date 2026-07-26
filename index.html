@@ -172,6 +172,7 @@
       70% { box-shadow: 0 0 0 8px rgba(232,176,74,0); }
       100% { box-shadow: 0 0 0 0 rgba(232,176,74,0); }
     }
+    .next-show-dot.is-past { background: #70708a; animation: none; }
     .next-show-label {
       font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
       color: #c8902a; white-space: nowrap;
@@ -678,8 +679,8 @@
     </div>
 
     <a href="gigs.html" id="next-show-banner" class="next-show-banner" style="display:none;margin-bottom:2.25rem;">
-      <span class="next-show-dot"></span>
-      <span class="next-show-label">Next Show</span>
+      <span class="next-show-dot" id="next-show-dot"></span>
+      <span class="next-show-label" id="next-show-label">Next Show</span>
       <span class="next-show-text" id="next-show-text"></span>
       <svg class="next-show-arrow" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -1161,11 +1162,18 @@
       const upcoming = gigs
         .filter(g => parseGigDate(g.date) >= today)
         .sort((a, b) => a.date.localeCompare(b.date));
-      if (upcoming.length === 0) return;
+      const past = gigs
+        .filter(g => parseGigDate(g.date) < today)
+        .sort((a, b) => b.date.localeCompare(a.date));
 
-      const next = upcoming[0];
+      const isPast = upcoming.length === 0;
+      const next = isPast ? past[0] : upcoming[0];
+      if (!next) return;
+
       const dateStr = parseGigDate(next.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const banner = document.getElementById('next-show-banner');
+      document.getElementById('next-show-label').textContent = isPast ? 'Latest Show' : 'Next Show';
+      document.getElementById('next-show-dot').classList.toggle('is-past', isPast);
       document.getElementById('next-show-text').innerHTML =
         `${dateStr} <span class="muted">·</span> ${next.venue} <span class="muted">·</span> ${next.city}`;
       banner.style.display = 'inline-flex';
